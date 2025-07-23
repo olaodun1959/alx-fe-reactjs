@@ -3,7 +3,8 @@ import WelcomeMessage from './components/WelcomeMessage';
 import Header from './components/Header';
 import UserProfile from './components/UserProfile';
 import MainContent from './components/MainContent';
-import Footer from './components/Footer'
+import Footer from './components/Footer';
+import Counter from './components/Counter';
 function App() {
   return (
     <div>
@@ -18,6 +19,7 @@ function App() {
         bio="Loves hiking and photography" 
       />
     </div>
+    <Counter/>
       <Footer />
     </div>
   );
