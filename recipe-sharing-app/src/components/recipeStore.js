@@ -3,45 +3,24 @@ import { create } from 'zustand';
 
 export const useRecipeStore = create((set) => ({
   recipes: [],
-  searchTerm: '',
-  filteredRecipes: [],
-  
-  setSearchTerm: (term) => {
-    set({ searchTerm: term });
-    set((state) => ({
-      filteredRecipes: state.recipes.filter((recipe) =>
-        recipe.title.toLowerCase().includes(term.toLowerCase())
-      ),
-    }));
-  },
+  favorites: [],
+  recommendations: [],
 
-  addRecipe: (newRecipe) =>
+  addFavorite: (recipeId) =>
     set((state) => ({
-      recipes: [...state.recipes, newRecipe],
-      filteredRecipes: [...state.recipes, newRecipe], // keep filtered in sync
+      favorites: [...state.favorites, recipeId],
     })),
 
-  updateRecipe: (updatedRecipe) =>
-    set((state) => {
-      const updated = state.recipes.map((r) =>
-        r.id === updatedRecipe.id ? updatedRecipe : r
-      );
-      return {
-        recipes: updated,
-        filteredRecipes: updated.filter((recipe) =>
-          recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
-        ),
-      };
-    }),
+  removeFavorite: (recipeId) =>
+    set((state) => ({
+      favorites: state.favorites.filter((id) => id !== recipeId),
+    })),
 
-  deleteRecipe: (id) =>
+  generateRecommendations: () =>
     set((state) => {
-      const updated = state.recipes.filter((r) => r.id !== id);
-      return {
-        recipes: updated,
-        filteredRecipes: updated.filter((recipe) =>
-          recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
-        ),
-      };
+      const recommended = state.recipes.filter((recipe) =>
+        state.favorites.includes(recipe.id) && Math.random() > 0.5
+      );
+      return { recommendations: recommended };
     }),
 }));
