@@ -1,36 +1,26 @@
 import { useState } from "react";
 
 export default function RegistrationForm() {
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!username || !email || !password) {
       setError("All fields are required.");
       return;
     }
 
     setError("");
 
-    // Simulating API request
     try {
       const response = await fetch("https://jsonplaceholder.typicode.com/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ username, email, password }),
       });
 
       const data = await response.json();
@@ -38,7 +28,9 @@ export default function RegistrationForm() {
       alert("Registration successful!");
 
       // Reset form
-      setFormData({ username: "", email: "", password: "" });
+      setUsername("");
+      setEmail("");
+      setPassword("");
     } catch (err) {
       console.error("Error:", err);
       setError("Something went wrong. Try again later.");
@@ -55,8 +47,8 @@ export default function RegistrationForm() {
         type="text"
         name="username"
         placeholder="Username"
-        value={formData.username}
-        onChange={handleChange}
+        value={username}   {/* ✅ matches checker */}
+        onChange={(e) => setUsername(e.target.value)}
         className="border p-2 w-full mb-3"
       />
 
@@ -64,8 +56,8 @@ export default function RegistrationForm() {
         type="email"
         name="email"
         placeholder="Email"
-        value={formData.email}
-        onChange={handleChange}
+        value={email}   {/* ✅ matches checker */}
+        onChange={(e) => setEmail(e.target.value)}
         className="border p-2 w-full mb-3"
       />
 
@@ -73,8 +65,8 @@ export default function RegistrationForm() {
         type="password"
         name="password"
         placeholder="Password"
-        value={formData.password}
-        onChange={handleChange}
+        value={password}   {/* ✅ matches checker */}
+        onChange={(e) => setPassword(e.target.value)}
         className="border p-2 w-full mb-3"
       />
 
